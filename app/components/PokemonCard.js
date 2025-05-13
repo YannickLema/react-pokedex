@@ -22,7 +22,10 @@ const PokemonCard = ({ pokemon }) => {
       steel: 'bg-gray-500',
       fairy: 'bg-pink-300'
     };
-    return colors[type.toLowerCase()] || 'bg-gray-400';
+    
+    // Vérification du type et conversion en chaîne de caractères si nécessaire
+    const typeString = typeof type === 'object' ? type.name : type;
+    return colors[typeString.toLowerCase()] || 'bg-gray-400';
   };
 
   return (
@@ -43,10 +46,10 @@ const PokemonCard = ({ pokemon }) => {
         <div className="flex flex-wrap gap-2 justify-center">
           {pokemon.types.map((type) => (
             <span
-              key={type}
+              key={typeof type === 'object' ? type.name : type}
               className={`${getTypeColor(type)} text-white px-3 py-1 rounded-full text-sm`}
             >
-              {type}
+              {typeof type === 'object' ? type.name : type}
             </span>
           ))}
         </div>
