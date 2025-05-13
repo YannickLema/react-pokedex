@@ -11,9 +11,9 @@ const Filters = ({ onSearch }) => {
   useEffect(() => {
     const fetchTypes = async () => {
       try {
-        const response = await fetch('https://nestjs-pokedex-api.vercel.app/types');
+        const response = await fetch('https://pokeapi.co/api/v2/type');
         const data = await response.json();
-        setTypes(data);
+        setTypes(data.results);
       } catch (error) {
         console.error('Erreur lors de la récupération des types:', error);
       } finally {
@@ -24,13 +24,13 @@ const Filters = ({ onSearch }) => {
     fetchTypes();
   }, []);
 
-  const handleTypeToggle = (typeId) => {
+  const handleTypeToggle = (typeName) => {
     setSelectedTypes(prev => {
-      const isSelected = prev.includes(typeId);
+      const isSelected = prev.includes(typeName);
       if (isSelected) {
-        return prev.filter(id => id !== typeId);
+        return prev.filter(t => t !== typeName);
       } else {
-        return [...prev, typeId];
+        return [...prev, typeName];
       }
     });
   };
@@ -53,7 +53,7 @@ const Filters = ({ onSearch }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Rechercher un Pokémon..."
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 placeholder-gray-500"
           />
         </div>
         
@@ -68,11 +68,11 @@ const Filters = ({ onSearch }) => {
       <div className="flex flex-wrap gap-2">
         {types.map((type) => (
           <button
-            key={type.id}
+            key={type.name}
             type="button"
-            onClick={() => handleTypeToggle(type.id)}
+            onClick={() => handleTypeToggle(type.name)}
             className={`px-4 py-2 rounded-full border transition-colors ${
-              selectedTypes.includes(type.id)
+              selectedTypes.includes(type.name)
                 ? 'bg-blue-500 text-white border-blue-500'
                 : 'bg-white text-gray-700 border-gray-300 hover:border-blue-500'
             }`}
